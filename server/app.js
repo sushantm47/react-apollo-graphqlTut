@@ -2,6 +2,7 @@ const express = require('express');
 const graphqlHTTP = require('express-graphql');
 const schema = require('./schema/schema');
 const mongoose = require('mongoose');
+require('dotenv/config');
 
 const cors = require('cors');
 
@@ -12,13 +13,10 @@ app.use(cors());
 
 mongoose.Promise = global.Promise;
 mongoose
-  .connect(
-    'mongodb://testuser:test123@vcluster-shard-00-00-zyixk.mongodb.net:27017,vcluster-shard-00-01-zyixk.mongodb.net:27017,vcluster-shard-00-02-zyixk.mongodb.net:27017/<dbname>?ssl=true&replicaSet=Vcluster-shard-0&authSource=admin&retryWrites=true&w=majority',
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }
-  )
+  .connect(process.env.DB_Connection, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => {
     console.log(' MongoDB Connected 👻!!');
   })
